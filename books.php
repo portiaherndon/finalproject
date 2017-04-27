@@ -9,6 +9,9 @@
 		<meta charset="utf-8" />
 	</head>
 	<body>
+		<div id = "categories">
+
+		</div>
 	</body>
 <?php
 
