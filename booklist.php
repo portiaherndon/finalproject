@@ -3,23 +3,37 @@
 	$categories=$db->query("SELECT * FROM book_category;");
 	$test = False;
 	$book_categories = array();
+	$i=0;
 	foreach($categories as $category ){ 
-		//echo $category;
-		for($i=1;$i<count($category);$i++){
-			if($i>1){
-				$x=$i;
-				while($x >1){ 
-					if($category["category"] === $book_categories[$x-1]){
+		if($i === 0)
+		{ 
+			$book_categories[$i] = $category["category"];
+		}
+		else
+		{
+			$s = $i;
+			while($s>0)
+			{
+				if($category["category"] == $book_categories[$s-1])
+				{
+					
 					$test = True;
-					}
-					else
-						$test = False;
-					$x--;
+					break;
 				}
+				else
+				{
+					$test = False;	
+				}
+				$s--;
 			}
-			if($test === False){
-				$book_categories = $category; 
-			}
-		}		
+		}
+		if($test === False) { 
+			$book_categories[$i] = $category["category"];
+			$i++; 
+		} 
 	} 
+	$xml = new SimpleXMLElement("<?xml version='1.0'?><categories/>"); 
+	array_walk_recursive($book_categories, array($Xml,'addchild'));
+	echo($xml->asXML());
+	echo json_encode($book_categories, JSON_FORCE_OBJECT);
 ?>
